@@ -952,6 +952,7 @@ def configure(ctx):
     ctx.load('detections.compiler')
     ctx.load('detections.devices')
     ctx.load('gnu_dirs')
+    ctx.load('clang_compilation_database')
 
     # if libdir is not set in command line options,
     # override the gnu_dirs default in order to

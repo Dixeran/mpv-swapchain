@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "d3d11.h": "c"
+    },
+    "C_Cpp.default.compileCommands": "./build/compile_commands.json"
+}
