@@ -18,6 +18,7 @@ static int init(struct render_backend *ctx, mpv_render_param *params)
     struct priv *p = ctx->priv;
     p->w = 320;
     p->h = 240;
+    p->swapchain_out = NULL;
 
     char *api = get_mpv_render_param(params, MPV_RENDER_PARAM_API_TYPE, NULL);
     if (!api)
@@ -113,6 +114,9 @@ const struct render_backend_fns render_backend_swapchain = {
 bool is_render_headless(struct ra_ctx *ctx)
 {
     struct render_backend *render_ctx = get_libmpv_renderer(ctx);
+    if (!render_ctx)
+        return false;
+
     struct priv *p = render_ctx->priv;
     if (!p)
         return false;

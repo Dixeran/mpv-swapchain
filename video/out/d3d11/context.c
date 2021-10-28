@@ -503,6 +503,10 @@ static bool d3d11_init(struct ra_ctx *ctx)
         goto error;
 
     bool render_headless = is_render_headless(ctx);
+    if (render_headless) {
+        MP_VERBOSE(ctx, "Using headless swapchain renderer\n");
+    }
+
     if (!render_headless && !vo_w32_init(ctx->vo))
         goto error;
 

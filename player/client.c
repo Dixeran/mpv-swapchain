@@ -88,6 +88,8 @@ struct mp_client_api {
 
 struct render_backend *get_libmpv_renderer_from_client(struct mp_client_api *mp_client)
 {
+    if (!mp_client)
+        return NULL;
     return get_libmpv_renderer_from_ctx(mp_client->render_context);
 }
 

@@ -112,6 +112,8 @@ struct mpv_render_context {
 
 struct render_backend *get_libmpv_renderer_from_ctx(struct mpv_render_context *ctx)
 {
+    if (!ctx)
+        return NULL;
     return ctx->renderer;
 }
 

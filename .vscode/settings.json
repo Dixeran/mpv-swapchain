@@ -9,6 +9,7 @@
         "global.h": "c",
         "client.h": "c",
         "libmpv_swapchain.h": "c",
-        "context.h": "c"
+        "context.h": "c",
+        "libmpv_helper.h": "c"
     }
 }
