@@ -44,6 +44,7 @@
 #include "osdep/timer.h"
 #include "osdep/io.h"
 #include "stream/stream.h"
+#include "video/out/d3d11/libmpv_helper.h"
 
 #include "command.h"
 #include "core.h"
@@ -84,6 +85,11 @@ struct mp_client_api {
 
     struct mpv_render_context *render_context;
 };
+
+struct render_backend *get_libmpv_renderer_from_client(struct mp_client_api *mp_client)
+{
+    return get_libmpv_renderer_from_ctx(mp_client->render_context);
+}
 
 struct observe_property {
     // -- immutable

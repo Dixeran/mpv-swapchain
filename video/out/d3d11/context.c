@@ -25,6 +25,7 @@
 #include "video/out/gpu/spirv.h"
 #include "video/out/w32_common.h"
 #include "ra_d3d11.h"
+#include "libmpv_swapchain.h"
 
 static int d3d11_validate_adapter(struct mp_log *log,
                                   const struct m_option *opt,

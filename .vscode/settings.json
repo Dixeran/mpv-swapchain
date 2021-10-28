@@ -1,7 +1,14 @@
 {
     "C_Cpp.default.compileCommands": "./build/compile_commands.json",
-    "C_Cpp.intelliSenseEngine": "Disabled",
     "clangd.arguments": [
         "--compile-commands-dir=./build"
-    ]
+    ],
+    "C_Cpp.intelliSenseEngineFallback": "Enabled",
+    "C_Cpp.intelliSenseMemoryLimit": 12000,
+    "files.associations": {
+        "global.h": "c",
+        "client.h": "c",
+        "libmpv_swapchain.h": "c",
+        "context.h": "c"
+    }
 }

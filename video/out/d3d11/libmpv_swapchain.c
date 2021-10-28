@@ -1,6 +1,8 @@
 #include "config.h"
 #include "libmpv/render_swapchain.h"
 #include "video/out/libmpv.h"
+#include "libmpv_swapchain.h"
+#include "libmpv_helper.h"
 
 struct priv
 {
@@ -107,3 +109,42 @@ const struct render_backend_fns render_backend_swapchain = {
     .render = render,
     .destroy = destroy,
 };
+
+bool is_render_headless(struct ra_ctx *ctx)
+{
+    struct render_backend *render_ctx = get_libmpv_renderer(ctx);
+    struct priv *p = render_ctx->priv;
+    if (!p)
+        return false;
+
+    if (p->swapchain_out)
+        return true;
+
+    return false;
+}
+
+bool resize_update(struct ra_ctx *ctx, int *w_new, int *h_new)
+{
+    assert(w_new != NULL);
+    assert(h_new != NULL);
+    struct render_backend *render_ctx = get_libmpv_renderer(ctx);
+    struct priv *p = render_ctx->priv;
+    if (p && (*w_new != p->w || *h_new != p->h))
+    {
+        *w_new = p->w;
+        *h_new = p->h;
+        return true;
+    }
+    return false;
+}
+
+void expose_swapchain(struct ra_ctx *ctx, IDXGISwapChain *swapchain)
+{
+    struct render_backend *render_ctx = get_libmpv_renderer(ctx);
+    struct priv *p = render_ctx->priv;
+    if (!p)
+        return;
+
+    IDXGISwapChain **p_swapchain = p->swapchain_out;
+    *p_swapchain = swapchain;
+}
