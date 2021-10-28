@@ -182,7 +182,8 @@ static bool resize(struct ra_ctx *ctx)
 
 static bool d3d11_reconfig(struct ra_ctx *ctx)
 {
-    vo_w32_config(ctx->vo);
+    if (!is_render_headless(ctx))
+        vo_w32_config(ctx->vo);
     return resize(ctx);
 }
 
@@ -408,7 +409,18 @@ static int d3d11_control(struct ra_ctx *ctx, int *events, int request, void *arg
         fullscreen_switch_needed = false;
     }
 
-    ret = vo_w32_control(ctx->vo, events, request, arg);
+    if (is_render_headless(ctx))
+    {
+        if (resize_update(ctx, &(ctx->vo->dwidth), &(ctx->vo->dheight)))
+        {
+            *events |= VO_EVENT_RESIZE;
+        }
+        ret = VO_TRUE;
+    }
+    else
+    {
+        ret = vo_w32_control(ctx->vo, events, request, arg);
+    }
 
     // if entering full screen, handle d3d11 after general windowing stuff
     if (fullscreen_switch_needed && p->vo_opts->fullscreen) {
@@ -435,7 +447,10 @@ static void d3d11_uninit(struct ra_ctx *ctx)
     if (ctx->ra)
         ra_tex_free(ctx->ra, &p->backbuffer);
     SAFE_RELEASE(p->swapchain);
-    vo_w32_uninit(ctx->vo);
+    if (!is_render_headless(ctx))
+    {
+        vo_w32_uninit(ctx->vo);
+    }
     SAFE_RELEASE(p->device);
 
     // Destory the RA last to prevent objects we hold from showing up in D3D's
@@ -487,11 +502,12 @@ static bool d3d11_init(struct ra_ctx *ctx)
     if (!ctx->ra)
         goto error;
 
-    if (!vo_w32_init(ctx->vo))
+    bool render_headless = is_render_headless(ctx);
+    if (!render_headless && !vo_w32_init(ctx->vo))
         goto error;
 
     struct d3d11_swapchain_opts scopts = {
-        .window = vo_w32_hwnd(ctx->vo),
+        .window = render_headless ? NULL : vo_w32_hwnd(ctx->vo),
         .width = ctx->vo->dwidth,
         .height = ctx->vo->dheight,
         .format = p->opts->output_format,
@@ -509,6 +525,9 @@ static bool d3d11_init(struct ra_ctx *ctx)
     p->backbuffer = get_backbuffer(ctx);
     if (!p->backbuffer)
         goto error;
+
+    if (render_headless)
+        expose_swapchain(ctx, p->swapchain);
 
     return true;
 
