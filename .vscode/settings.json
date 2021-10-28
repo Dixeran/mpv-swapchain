@@ -1,6 +1,7 @@
 {
-    "files.associations": {
-        "d3d11.h": "c"
-    },
-    "C_Cpp.default.compileCommands": "./build/compile_commands.json"
+    "C_Cpp.default.compileCommands": "./build/compile_commands.json",
+    "C_Cpp.intelliSenseEngine": "Disabled",
+    "clangd.arguments": [
+        "--compile-commands-dir=./build"
+    ]
 }
