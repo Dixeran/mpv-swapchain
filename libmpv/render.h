@@ -421,6 +421,11 @@ typedef enum mpv_render_param_type {
      * See MPV_RENDER_PARAM_SW_STRIDE for alignment requirements.
      */
     MPV_RENDER_PARAM_SW_POINTER = 20,
+    /*
+     * MPV_RENDER_API_TYPE_SWAPCHAIN only
+     */
+    MPV_RENDER_PARAM_SWAPCHAIN_INIT_PARAMS = 21,
+    MPV_RENDER_PARAM_SWAPCHAIN_UPDATE_PARAMS = 22,
 } mpv_render_param_type;
 
 /**
@@ -467,6 +472,8 @@ typedef struct mpv_render_param {
 #define MPV_RENDER_API_TYPE_OPENGL "opengl"
 // See section "Software renderer"
 #define MPV_RENDER_API_TYPE_SW "sw"
+// Simple interface for render into swapchain
+#define MPV_RENDER_API_TYPE_SWAPCHAIN "swapchain"
 
 /**
  * Flags used in mpv_render_frame_info.flags. Each value represents a bit in it.
